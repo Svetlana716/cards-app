@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { URL } from './constants';
-import { ICardItem } from '../models/ICardItem';
+import { API_KEY, cardsPerPage, URL } from './constants';
+import { ICardItem, ICreatingCardItem, IResponse } from '../models/ICardItem';
 
 const api = axios.create({
     baseURL: URL,
+    headers: { 'x-api-key': API_KEY },
 });
 
 api.interceptors.response.use(
@@ -14,17 +15,29 @@ api.interceptors.response.use(
     },
 );
 
-// получение списка карточек
-export const getCards = async () => {
-    const res = await api.get<ICardItem[]>('/api/v1/products');
-    return res.data;
+//TODO: axios-cache-adapter
+
+export const getCards = async (params: string): Promise<IResponse> => {
+    const { data, headers } = await api.get<ICardItem[]>(
+        `/images/search?${params}`,
+    );
+    console.log(headers);
+    //получаем из ответа данные из body и headers(данные о количестве возвращаемых элементов)
+    //возвращаем обект с данными и количеством этих данных
+    return { cards: data, count: headers['pagination-count'] };
 };
 
-export const deleteCard = async (id: number) => {
-    await api.delete(`/api/v1/products/${id}`);
+export const getCardById = async (id: string) => {
+    const { data } = await api.get<ICardItem>(`/images/${id}`);
+    return data;
+};
+
+export const deleteCard = async (id: string) => {
+    await api.delete<string>(`/images/${id}`);
     return id;
 };
 
-export const createCard = async (body: ICardItem) => {
-    return await api.post<ICardItem>('/photos', body);
+export const createCard = async (body: ICreatingCardItem) => {
+    const { data } = await api.post<ICardItem>('/api/v1/products/', body);
+    return data;
 };

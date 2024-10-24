@@ -1,28 +1,31 @@
-import { createCard, deleteCard, getCards } from '../../utils/api';
-import { ICardItem } from '../../models/ICardItem';
+import { createCard, deleteCard, getCardById, getCards } from '../../utils/api';
+import { ICreatingCardItem } from '../../models/ICardItem';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchGetCards = createAsyncThunk(
     'cards/fetchGetCards',
-    async () => {
-        return await getCards();
+    async (payload: string) => {
+        return await getCards(payload);
+    },
+);
+
+export const fetchGetCardById = createAsyncThunk(
+    'cards/fetchGetCardById',
+    async (payload: string) => {
+        return await getCardById(payload);
     },
 );
 
 export const fetchDeleteCard = createAsyncThunk(
     'cards/fetchDeleteCard',
-    async (payload: number) => {
+    async (payload: string) => {
         return await deleteCard(payload);
     },
 );
 
-export const fetchCreateCards = createAsyncThunk(
+export const fetchCreateCard = createAsyncThunk(
     'cards/fetchCreateCards',
-    async (payload: ICardItem, { rejectWithValue }) => {
-        try {
-            return await createCard(payload);
-        } catch (error: any) {
-            return rejectWithValue(error.message);
-        }
+    async (payload: ICreatingCardItem) => {
+        return await createCard(payload);
     },
 );
