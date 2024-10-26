@@ -18,7 +18,7 @@ import { getCardsPath } from '../../store/cards/selectors';
 import { getLikeFromLocalStorage } from '../../utils/localStorage';
 import { CardItem } from '../card-item/CardItem';
 import { cardsPerPage } from '../../utils/constants';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, URLSearchParamsInit, useSearchParams } from 'react-router-dom';
 import { ICardItem } from '../../models/ICardItem';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -32,7 +32,7 @@ export const CardsList: FC = () => {
     const classes = useStyles();
     const dispatch = useAppDispatch();
     const [searchParams, setSearchParams] = useSearchParams({
-        page: '1',
+        page: '0',
         limit: cardsPerPage.toString(),
     });
     const page = parseInt(searchParams.get('page') || '1', 10);
@@ -60,18 +60,19 @@ export const CardsList: FC = () => {
         return cards;
     }, [isFavour, cards]);
 
-    const paginateSlots = Math.ceil(total / cardsPerPage);
-
-    const handleChange = (
+    //пагинация
+    const handlePaginationChange = (
         e: React.ChangeEvent<unknown>,
         pageNumber: number,
     ) => {
         e.preventDefault();
-        setSearchParams({
-            page: (pageNumber - 1).toString(),
-            limit: cardsPerPage.toString(),
+        setSearchParams(params => {
+            params.set('page', (pageNumber - 1).toString());
+            return params;
         });
     };
+
+    const paginateSlots = Math.ceil(total / cardsPerPage);
 
     return (
         <>
@@ -89,13 +90,9 @@ export const CardsList: FC = () => {
                 )}
                 {error && <p>{error}</p>}
                 <Grid2 container spacing={4}>
-                    {cardsForRendering.map(card =>
-                        card.breeds.length > 0 ? (
-                            <CardItem key={card.id} {...card} />
-                        ) : (
-                            <CardItem key={card.id} {...card} />
-                        ),
-                    )}
+                    {cardsForRendering.map(card => (
+                        <CardItem key={card.id} {...card} />
+                    ))}
                 </Grid2>
             </Container>
             {paginateSlots > 1 && (
@@ -104,7 +101,7 @@ export const CardsList: FC = () => {
                         count={paginateSlots}
                         page={page + 1}
                         color="primary"
-                        onChange={handleChange}
+                        onChange={handlePaginationChange}
                         showFirstButton
                         showLastButton
                         sx={{ marginY: 3, marginX: 'auto' }}

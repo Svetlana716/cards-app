@@ -1,13 +1,9 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, Suspense } from 'react';
 import { Header } from '../../widgets/header/Header';
 import { Footer } from '../../widgets/footer/Footer';
 import { Container, Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Outlet } from 'react-router-dom';
-
-/* interface IPageWrapper {
-    children: ReactNode;
-} */
 
 const useStyles = makeStyles((theme: Theme) => ({
     content: {
@@ -16,19 +12,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-/* export const PageWrapper: FC<IPageWrapper> = ({ children }) => {
-    const classes = useStyles();
-    return (
-        <>
-            <Header />
-            <main>
-                <Container className={classes.content}>{children}</Container>
-            </main>
-            <Footer />
-        </>
-    );
-}; */
-
 const PageWrapper: FC = () => {
     const classes = useStyles();
     return (
@@ -36,7 +19,9 @@ const PageWrapper: FC = () => {
             <Header />
             <main>
                 <Container className={classes.content}>
-                    <Outlet />
+                    <Suspense fallback={<p>'Loading...'</p>}>
+                        <Outlet />
+                    </Suspense>
                 </Container>
             </main>
             <Footer />

@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export const MainPage: FC = () => {
+const MainPage: FC = () => {
     const classes = useStyles();
     const dispatch = useAppDispatch();
     const { isModalOpen, closeModal, openModal } = useModal();
@@ -61,3 +61,5 @@ export const MainPage: FC = () => {
         </>
     );
 };
+
+export default MainPage;

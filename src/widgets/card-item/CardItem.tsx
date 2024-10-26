@@ -80,10 +80,6 @@ export const CardItem: FC<any> = ({ id, url, breeds }) => {
 
     /*  const [{ name }] = breeds; */
 
-    if (!breeds) {
-        return null;
-    }
-
     return (
         <Grid2 key={id} size={{ xs: 12, sm: 6, md: 4 }}>
             <Card className={classes.card}>
@@ -100,7 +96,7 @@ export const CardItem: FC<any> = ({ id, url, breeds }) => {
                             variant="h5"
                             component="h2"
                         >
-                            {'vvwsv'}
+                            {breeds.length > 0 ? breeds[0].name : ''}
                         </Typography>
                     </CardContent>
                 </Link>

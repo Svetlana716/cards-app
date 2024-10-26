@@ -4,22 +4,22 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchGetCards = createAsyncThunk(
     'cards/fetchGetCards',
-    async (payload: string) => {
-        return await getCards(payload);
+    async (params: string) => {
+        return await getCards(params);
     },
 );
 
 export const fetchGetCardById = createAsyncThunk(
     'cards/fetchGetCardById',
-    async (payload: string) => {
-        return await getCardById(payload);
+    async (id: string) => {
+        return await getCardById(id);
     },
 );
 
 export const fetchDeleteCard = createAsyncThunk(
     'cards/fetchDeleteCard',
-    async (payload: string) => {
-        return await deleteCard(payload);
+    async (id: string) => {
+        return await deleteCard(id);
     },
 );
 
