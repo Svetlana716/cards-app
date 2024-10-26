@@ -1,13 +1,26 @@
-import { Button, Grid2, Theme, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Grid2,
+    Paper,
+    Theme,
+    Typography,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { FC } from 'react';
-import { useAppDispatch } from '../../store/hooks';
-import { changesFavour } from '../../store/cards/slice';
+import { FC, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useModal } from '../../hooks/useModal';
 import { CardsList } from '../../widgets/card-list/CardsList';
 import { Modal } from '../../widgets/modal/Modal';
+import { fetchGetRandomFact } from '../../store/facts/actions';
+import { getFactsPath } from '../../store/facts/selectors';
 
 const useStyles = makeStyles((theme: Theme) => ({
+    paper: {
+        minHeight: '150px',
+        color: 'grey',
+    },
     buttons: {
         marginTop: theme.spacing(4),
     },
@@ -18,6 +31,12 @@ const MainPage: FC = () => {
     const dispatch = useAppDispatch();
     const { isModalOpen, closeModal, openModal } = useModal();
 
+    useEffect(() => {
+        dispatch(fetchGetRandomFact());
+    }, []);
+
+    const { fact, loading, error } = useAppSelector(getFactsPath);
+
     return (
         <>
             <Typography
@@ -27,22 +46,24 @@ const MainPage: FC = () => {
                 color="textPrimary"
                 gutterBottom
             >
-                Album layout
+                Meow Club
             </Typography>
-            <Typography variant="h5" align="center" color="textSecondary">
-                Something short and leading about the collection below—its
-                contents, the creator, etc. Make it short and sweet, but not too
-                short so folks don&apos;t simply skip over it entirely.
-            </Typography>
+            <Paper elevation={24} className={classes.paper}>
+                <Typography variant="h5" align="center" color="textPrimary">
+                    {loading && <CircularProgress color="inherit" />}
+                    {error && <p>{error}</p>}
+                    {fact?.fact}
+                </Typography>
+            </Paper>
             <div className={classes.buttons}>
                 <Grid2 container spacing={2} justifyContent="center">
                     <Grid2>
                         <Button
-                            onClick={() => dispatch(changesFavour())}
+                            onClick={() => dispatch(fetchGetRandomFact())}
                             variant="contained"
                             color="primary"
                         >
-                            Favorite
+                            New cat fact
                         </Button>
                     </Grid2>
                     <Grid2>

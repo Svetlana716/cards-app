@@ -46,8 +46,6 @@ export const CardsList: FC = () => {
 
     //TODO: add isFavour to localsrorage
 
-    //TODO: add has_breeds to localsrorage
-
     const likes = getLikeFromLocalStorage();
 
     //проверка на то что массив breeds не пуст

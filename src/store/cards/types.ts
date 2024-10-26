@@ -1,4 +1,4 @@
-import { ICardItem, IResponse } from '../../models/ICardItem';
+import { ICardItem } from '../../models/ICardItem';
 
 export interface CardsState {
     cards: ICardItem[];
