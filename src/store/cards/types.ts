@@ -2,7 +2,7 @@ import { ICardItem } from '../../models/ICardItem';
 
 export interface CardsState {
     cards: ICardItem[];
-    total: number;
+    totalCards: number;
     currentCard: ICardItem | null;
     likes: number[];
     isFavour: boolean;

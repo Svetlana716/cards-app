@@ -22,7 +22,9 @@ import {
     getLikeFromLocalStorage,
     setLikeToLocalStorage,
 } from '../../utils/localStorage';
-import { Link } from 'react-router-dom';
+import { useModal } from '../../hooks/useModal';
+import CardInfo from '../modal/card-info/CardInfo';
+import { Modal } from '../modal/Modal';
 
 const useStyles = makeStyles((theme: Theme) => ({
     cardGrid: {
@@ -62,6 +64,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const CardItem: FC<any> = ({ id, url, breeds }) => {
     const classes = useStyles();
     const dispatch = useAppDispatch();
+    const { isModalOpen, closeModal, openModal } = useModal();
 
     const likes = getLikeFromLocalStorage();
 
@@ -78,28 +81,33 @@ export const CardItem: FC<any> = ({ id, url, breeds }) => {
         setLikeToLocalStorage(id);
     };
 
+    const handleCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        // Проверяем, не был ли клик совершен по кнопке
+        if (!(event.target as HTMLElement).closest('button')) {
+            openModal();
+        }
+    };
+
     /*  const [{ name }] = breeds; */
 
     return (
         <Grid2 key={id} size={{ xs: 12, sm: 6, md: 4 }}>
-            <Card className={classes.card}>
-                <Link className={classes.link} to={`/${id}`}>
-                    <CardMedia
-                        className={classes.cardMedia}
-                        image={url}
-                        title="Image title"
-                    />
-                    <CardContent className={classes.cardContent}>
-                        <Typography
-                            className={classes.cardText}
-                            gutterBottom
-                            variant="h5"
-                            component="h2"
-                        >
-                            {breeds.length > 0 ? breeds[0].name : ''}
-                        </Typography>
-                    </CardContent>
-                </Link>
+            <Card className={classes.card} onClick={handleCardClick}>
+                <CardMedia
+                    className={classes.cardMedia}
+                    image={url}
+                    title="Image title"
+                />
+                <CardContent className={classes.cardContent}>
+                    <Typography
+                        className={classes.cardText}
+                        gutterBottom
+                        variant="h5"
+                        component="h2"
+                    >
+                        {breeds.length > 0 ? breeds[0].name : ''}
+                    </Typography>
+                </CardContent>
                 <CardActions className={classes.cardActions}>
                     <IconButton
                         onClick={() => handleLikeCard(id)}
@@ -119,6 +127,9 @@ export const CardItem: FC<any> = ({ id, url, breeds }) => {
                     </IconButton>
                 </CardActions>
             </Card>
+            <Modal isModalOpen={isModalOpen} closeModal={closeModal}>
+                <CardInfo url={url} breeds={breeds} id={id} />
+            </Modal>
         </Grid2>
     );
 };

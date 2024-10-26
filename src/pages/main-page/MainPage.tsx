@@ -1,5 +1,4 @@
 import {
-    Box,
     Button,
     CircularProgress,
     Grid2,
@@ -15,11 +14,12 @@ import { CardsList } from '../../widgets/card-list/CardsList';
 import { Modal } from '../../widgets/modal/Modal';
 import { fetchGetRandomFact } from '../../store/facts/actions';
 import { getFactsPath } from '../../store/facts/selectors';
+import { CreateCardForm } from '../../widgets/modal/create-card-form/CreateCardForm';
 
 const useStyles = makeStyles((theme: Theme) => ({
     paper: {
-        minHeight: '150px',
-        color: 'grey',
+        minHeight: '250px',
+        padding: theme.spacing(2, 2, 2),
     },
     buttons: {
         marginTop: theme.spacing(4),
@@ -77,7 +77,9 @@ const MainPage: FC = () => {
                     </Grid2>
                 </Grid2>
             </div>
-            <Modal isModalOpen={isModalOpen} closeModal={closeModal} />
+            <Modal isModalOpen={isModalOpen} closeModal={closeModal}>
+                <CreateCardForm closeModal={closeModal} />
+            </Modal>
             <CardsList />
         </>
     );

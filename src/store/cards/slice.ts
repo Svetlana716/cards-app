@@ -9,7 +9,7 @@ import { CardsState } from './types';
 
 const initialState: CardsState = {
     cards: [],
-    total: 0,
+    totalCards: 0,
     currentCard: null,
     likes: [],
     isFavour: false,
@@ -43,7 +43,7 @@ const cardSlice = createSlice({
                 state.loading = false;
                 state.error = null;
                 state.cards = payload.cards;
-                state.total = payload.count;
+                state.totalCards = payload.count;
             })
             .addCase(fetchGetCards.rejected, (state, { error }) => {
                 state.loading = false;

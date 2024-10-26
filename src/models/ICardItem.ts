@@ -3,7 +3,7 @@ interface ICategories {
     name: string;
 }
 
-interface IBreeds {
+export interface IBreeds {
     adaptability: number;
     affection_level: number;
     alt_names: string;

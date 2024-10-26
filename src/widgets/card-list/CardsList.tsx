@@ -41,7 +41,7 @@ export const CardsList: FC = () => {
         dispatch(fetchGetCards(searchParams.toString()));
     }, [searchParams]);
 
-    const { cards, total, loading, error, isFavour } =
+    const { cards, totalCards, loading, error, isFavour } =
         useAppSelector(getCardsPath);
 
     //TODO: add isFavour to localsrorage
@@ -70,7 +70,7 @@ export const CardsList: FC = () => {
         });
     };
 
-    const paginateSlots = Math.ceil(total / cardsPerPage);
+    const paginateSlots = Math.ceil(totalCards / cardsPerPage);
 
     return (
         <>
