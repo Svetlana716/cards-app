@@ -1,6 +1,5 @@
 import {
     Button,
-    DialogActions,
     DialogContentText,
     DialogTitle,
     TextField,
@@ -41,6 +40,7 @@ export const CreateCardForm: FC<ICreateCardFormProps> = ({ closeModal }) => {
         );
         closeModal();
     };
+
     return (
         <>
             <DialogTitle id="form-dialog-title">Create Card</DialogTitle>
@@ -49,76 +49,75 @@ export const CreateCardForm: FC<ICreateCardFormProps> = ({ closeModal }) => {
                 anonymous location data to Google, even when no apps are
                 running.
             </DialogContentText>
+            <form onSubmit={handleSubmit}>
+                <TextField
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="title"
+                    label="title"
+                    type="text"
+                    variant="standard"
+                    fullWidth
+                    onChange={handleChange}
+                    value={title}
+                    name="title"
+                ></TextField>
+                <TextField
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="price"
+                    label="price"
+                    type="text"
+                    variant="standard"
+                    fullWidth
+                    onChange={handleChange}
+                    value={price}
+                    name="price"
+                ></TextField>
+                <TextField
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="description"
+                    label="description"
+                    type="text"
+                    variant="standard"
+                    fullWidth
+                    onChange={handleChange}
+                    value={description}
+                    name="description"
+                ></TextField>
+                <TextField
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="category id"
+                    label="category id"
+                    type="text"
+                    variant="standard"
+                    fullWidth
+                    onChange={handleChange}
+                    value={categoryId}
+                    name="categoryId"
+                ></TextField>
 
-            <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="title"
-                label="title"
-                type="text"
-                variant="standard"
-                fullWidth
-                onChange={handleChange}
-                value={title}
-                name="title"
-            ></TextField>
-            <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="price"
-                label="price"
-                type="text"
-                variant="standard"
-                fullWidth
-                onChange={handleChange}
-                value={price}
-                name="price"
-            ></TextField>
-            <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="description"
-                label="description"
-                type="text"
-                variant="standard"
-                fullWidth
-                onChange={handleChange}
-                value={description}
-                name="description"
-            ></TextField>
-            <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="category id"
-                label="category id"
-                type="text"
-                variant="standard"
-                fullWidth
-                onChange={handleChange}
-                value={categoryId}
-                name="categoryId"
-            ></TextField>
-
-            <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="images"
-                label="images"
-                type="text"
-                variant="standard"
-                fullWidth
-                onChange={handleChange}
-                value={imagesArr}
-                name="imagesArr"
-            ></TextField>
-            <DialogActions>
+                <TextField
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="images"
+                    label="images"
+                    type="text"
+                    variant="standard"
+                    fullWidth
+                    onChange={handleChange}
+                    value={imagesArr}
+                    name="imagesArr"
+                ></TextField>
                 <Button type="submit">Create</Button>
-            </DialogActions>
+            </form>
         </>
     );
 };

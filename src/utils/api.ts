@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_KEY, cardsPerPage, factsURL, URL } from './constants';
+import { API_KEY, factsURL, URL } from './constants';
 import { ICardItem, ICreatingCardItem, IResponse } from '../models/ICardItem';
 import { IFact } from '../models/IFact';
 

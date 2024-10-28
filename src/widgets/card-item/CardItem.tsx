@@ -11,7 +11,7 @@ import {
 
 import { makeStyles } from '@mui/styles';
 
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { fetchDeleteCard } from '../../store/cards/actions';
 import { addFavour } from '../../store/cards/slice';
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-export const CardItem: FC<any> = ({ id, url, breeds }) => {
+export const CardItem: FC<any> = memo(({ id, url, breeds }) => {
     const classes = useStyles();
     const dispatch = useAppDispatch();
     const { isModalOpen, closeModal, openModal } = useModal();
@@ -89,7 +89,7 @@ export const CardItem: FC<any> = ({ id, url, breeds }) => {
     };
 
     /*  const [{ name }] = breeds; */
-
+    console.log('CardItem');
     return (
         <Grid2 key={id} size={{ xs: 12, sm: 6, md: 4 }}>
             <Card className={classes.card} onClick={handleCardClick}>
@@ -132,4 +132,4 @@ export const CardItem: FC<any> = ({ id, url, breeds }) => {
             </Modal>
         </Grid2>
     );
-};
+});

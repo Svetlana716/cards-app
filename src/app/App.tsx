@@ -10,6 +10,7 @@ const NotFoundPage = lazy(() => import('../pages/not-found-page/NotFoundPage'));
 
 export const App = () => {
     const theme = createTheme();
+    console.log('App');
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />

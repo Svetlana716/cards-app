@@ -45,6 +45,8 @@ const CardPage: FC = () => {
         return null;
     }
 
+    console.log('CardPage');
+
     const [{ name, description, wikipedia_url }] = card.breeds;
     return (
         <Paper
