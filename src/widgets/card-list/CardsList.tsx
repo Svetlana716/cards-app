@@ -3,10 +3,15 @@ import {
     Button,
     CircularProgress,
     Container,
+    FormControl,
     FormControlLabel,
     FormGroup,
     Grid2,
+    InputLabel,
+    MenuItem,
     Pagination,
+    Select,
+    SelectChangeEvent,
     Stack,
     Switch,
     Theme,
@@ -14,7 +19,7 @@ import {
 
 import { makeStyles } from '@mui/styles';
 
-import { FC, memo, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchGetCards } from '../../store/cards/actions';
 import { getCardsPath } from '../../store/cards/selectors';
@@ -30,25 +35,43 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     filters: {
         justifyContent: 'right',
+        alignItems: 'center',
         marginBottom: theme.spacing(1),
+    },
+    select: {
+        minWidth: '120px',
     },
 }));
 
 export const CardsList: FC = () => {
     const classes = useStyles();
     const dispatch = useAppDispatch();
-    const [breed, setBreed] = useState(false);
-    const [searchParams, setSearchParams] = useSearchParams({
-        page: '0',
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const [breed, setBreed] = useState(
+        JSON.parse(searchParams.get('has_breeds') || 'false'),
+    );
+
+    const [order, setOrder] = useState(searchParams.get('order') || 'ASC');
+
+    const [page, setPage] = useState(
+        parseInt(searchParams.get('page') || '1', 10),
+    );
+
+    const params = {
+        page: page.toString(),
         limit: cardsPerPage.toString(),
         has_breeds: breed.toString(),
-    });
-
-    const page = parseInt(searchParams.get('page') || '1', 10);
+        order,
+    };
 
     useEffect(() => {
         dispatch(fetchGetCards(searchParams.toString()));
     }, [searchParams]);
+
+    useEffect(() => {
+        setSearchParams(params);
+    }, []);
 
     const { cards, totalCards, loading, error, isFavour } =
         useAppSelector(getCardsPath);
@@ -67,12 +90,15 @@ export const CardsList: FC = () => {
         return cards;
     }, [isFavour, cards]);
 
+    console.log(totalCards);
+
     //пагинация
     const handlePaginationChange = (
         e: React.ChangeEvent<unknown>,
         pageNumber: number,
     ) => {
         e.preventDefault();
+        setPage(pageNumber - 1);
         setSearchParams(params => {
             params.set('page', (pageNumber - 1).toString());
             return params;
@@ -83,8 +109,7 @@ export const CardsList: FC = () => {
         return Math.ceil(totalCards / cardsPerPage);
     }, [totalCards]);
 
-    //переключатель
-
+    //переключатель has_breed
     const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setBreed(event.target.checked);
         setSearchParams(params => {
@@ -93,15 +118,23 @@ export const CardsList: FC = () => {
         });
     };
 
-    console.log(breed);
+    //выбор порядка карточек
+    const handleSelectChange = (event: SelectChangeEvent) => {
+        const value = event.target.value as string;
+        setOrder(value);
+        setSearchParams(params => {
+            params.set('order', value);
+            return params;
+        });
+    };
 
     console.log('CardsList');
     return (
         <>
             <Container className={classes.cardGrid}>
                 <Grid2 container spacing={2} className={classes.filters}>
-                    <FormGroup>
-                        <Grid2>
+                    <Grid2>
+                        <FormGroup>
                             <FormControlLabel
                                 label="pedigreed cats"
                                 control={
@@ -114,8 +147,26 @@ export const CardsList: FC = () => {
                                     />
                                 }
                             />
-                        </Grid2>
-                    </FormGroup>
+                        </FormGroup>
+                    </Grid2>
+                    <Grid2 className={classes.select}>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">
+                                Order
+                            </InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={order}
+                                label="order"
+                                onChange={handleSelectChange}
+                            >
+                                <MenuItem value={'ASC'}>ascending</MenuItem>
+                                <MenuItem value={'DESC'}>descending</MenuItem>
+                                <MenuItem value={'RANDOM'}>random</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid2>
                 </Grid2>
                 <Grid2 container spacing={4}>
                     {loading && (
