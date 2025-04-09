@@ -1,14 +1,13 @@
 import axios from 'axios';
-import { API_KEY, factsURL, URL } from './constants';
 import { ICardItem, ICreatingCardItem, IResponse } from '../models/ICardItem';
 import { IFact } from '../models/IFact';
 
-const api = axios.create({
-    baseURL: URL,
-    headers: { 'x-api-key': API_KEY },
+const catsApi = axios.create({
+    baseURL: import.meta.env.VITE_CATS_API_URL,
+    headers: { 'x-api-key': import.meta.env.VITE_API_KEY },
 });
 
-api.interceptors.response.use(
+catsApi.interceptors.response.use(
     response => response,
     error => {
         Promise.reject(error);
@@ -18,7 +17,7 @@ api.interceptors.response.use(
 
 //апи фактов о котах
 const factsApi = axios.create({
-    baseURL: factsURL,
+    baseURL: import.meta.env.VITE_FACTS_API_URL,
     headers: { Accept: 'application/json' },
 });
 
@@ -32,9 +31,9 @@ factsApi.interceptors.response.use(
 
 //TODO: axios-cache-adapter
 
-//карточки
+//карточки котов
 export const getCards = async (params: string): Promise<IResponse> => {
-    const { data, headers } = await api.get<ICardItem[]>(
+    const { data, headers } = await catsApi.get<ICardItem[]>(
         `/images/search?${params}`,
     );
     //получаем из ответа данные из body и headers(данные о количестве возвращаемых элементов)
@@ -43,21 +42,21 @@ export const getCards = async (params: string): Promise<IResponse> => {
 };
 
 export const getCardById = async (id: string) => {
-    const { data } = await api.get<ICardItem>(`/images/${id}`);
+    const { data } = await catsApi.get<ICardItem>(`/images/${id}`);
     return data;
 };
 
 export const deleteCard = async (id: string) => {
-    await api.delete<string>(`/images/${id}`);
+    await catsApi.delete<string>(`/images/${id}`);
     return id;
 };
 
 export const createCard = async (body: ICreatingCardItem) => {
-    const { data } = await api.post<ICardItem>('/api/v1/products/', body);
+    const { data } = await catsApi.post<ICardItem>('/api/v1/products/', body);
     return data;
 };
 
-//факты
+//факты о котахs
 export const getRandomFact = async () => {
     const { data } = await factsApi.get<IFact>('/fact');
     return data;

@@ -37,15 +37,13 @@ const CardPage: FC = () => {
     }, []);
 
     const handleBackClick = () => {
-        // Возвращаемся к предыдущему пути при закрытии модалки
+        // Возвращаемся к предыдущему пути
         navigate(-1);
     };
 
     if (!card) {
         return null;
     }
-
-    console.log('CardPage');
 
     const [{ name, description, wikipedia_url }] = card.breeds;
     return (
